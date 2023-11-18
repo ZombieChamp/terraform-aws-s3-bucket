@@ -53,6 +53,41 @@ variable "bucket_prefix" {
   default     = null
   type        = string
   description = "(Optional, Forces new resource) Creates a unique bucket name beginning with the specified prefix. Conflicts with bucket."
+
+  validation {
+    condition     = var.bucket_prefix == null ? true : length(var.bucket_prefix) <= 37
+    error_message = "Bucket prefix names must be less than or equal to 37 characters long."
+  }
+
+  validation {
+    condition     = var.bucket_prefix == null ? true : can(regex("^[a-z0-9.-]*$", var.bucket_prefix))
+    error_message = "Bucket prefix names can consist only of lowercase letters, numbers, dots (.), and hyphens (-)."
+  }
+
+  validation {
+    condition     = var.bucket_prefix == null ? true : can(regex("^[a-z0-9]", var.bucket_prefix))
+    error_message = "Bucket prefix names must begin with a letter or number."
+  }
+
+  validation {
+    condition     = !can(regex(".*[.][.].*", var.bucket_prefix))
+    error_message = "Bucket prefix names must not contain two adjacent periods."
+  }
+
+  validation {
+    condition     = !can(cidrnetmask("${var.bucket_prefix}/32"))
+    error_message = "Bucket prefix names must not be formatted as an IP address (for example, 192.168.5.4)."
+  }
+
+  validation {
+    condition     = var.bucket_prefix == null ? true : !startswith(var.bucket_prefix, "xn--")
+    error_message = "Bucket prefix names must not start with the prefix xn--."
+  }
+
+  validation {
+    condition     = var.bucket_prefix == null ? true : !startswith(var.bucket_prefix, "sthree-")
+    error_message = "Bucket prefix names must not start with the prefix sthree-."
+  }
 }
 
 variable "force_destroy" {
