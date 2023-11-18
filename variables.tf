@@ -106,4 +106,19 @@ variable "tags" {
   default     = {}
   type        = map(string)
   description = "(Optional) Map of tags to assign to the bucket. If configured with a provider default_tags configuration block present, tags with matching keys will overwrite those defined at the provider-level."
+
+  validation {
+    condition     = alltrue([for obj in keys(var.tags) : !startswith(obj, "aws:")])
+    error_message = "System created tags that begin with aws: are reserved for AWS use."
+  }
+
+  validation {
+    condition     = alltrue([for obj in keys(var.tags) : length(obj) >= 1 && length(obj) <= 128])
+    error_message = "Tag keys must be between 1 (min) and 128 (max) characters long."
+  }
+
+  validation {
+    condition     = alltrue([for obj in values(var.tags) : length(obj) <= 256])
+    error_message = "Tag values must be less than 256 characters long."
+  }
 }
