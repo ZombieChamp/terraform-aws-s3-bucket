@@ -23,8 +23,9 @@ variable "bucket" {
     error_message = "Bucket names must not contain two adjacent periods."
   }
 
+  # Whilst this regex is not accurate for an IP validation, AWS disallows strings that LOOK like IP addresses, such as: 900.102.1.888
   validation {
-    condition     = !can(cidrnetmask("${var.bucket}/32"))
+    condition     = !can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", var.bucket))
     error_message = "Bucket names must not be formatted as an IP address (for example, 192.168.5.4)."
   }
 
@@ -74,8 +75,9 @@ variable "bucket_prefix" {
     error_message = "Bucket prefix names must not contain two adjacent periods."
   }
 
+  # Whilst this regex is not accurate for an IP validation, AWS disallows strings that LOOK like IP addresses, such as: 900.102.1.888
   validation {
-    condition     = !can(cidrnetmask("${var.bucket_prefix}/32"))
+    condition     = !can(regex("^(?:[0-9]{1,3}\\.){3}[0-9]{1,3}$", var.bucket_prefix))
     error_message = "Bucket prefix names must not be formatted as an IP address (for example, 192.168.5.4)."
   }
 
