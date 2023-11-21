@@ -124,3 +124,27 @@ variable "tags" {
     error_message = "Tag values must be less than 256 characters long."
   }
 }
+
+variable "block_public_acls" {
+  default     = true
+  type        = bool
+  description = "(Optional, Default:true) Whether Amazon S3 should block public ACLs for this bucket."
+}
+
+variable "block_public_policy" {
+  default     = true
+  type        = bool
+  description = "(Optional, Default:true) Whether Amazon S3 should block public bucket policies for this bucket."
+}
+
+variable "ignore_public_acls" {
+  default     = true
+  type        = bool
+  description = "(Optional, Default:true) Whether Amazon S3 should ignore public ACLs for this bucket."
+}
+
+variable "restrict_public_buckets" {
+  default     = true
+  type        = bool
+  description = "(Optional, Default:true) Whether Amazon S3 should restrict public bucket policies for this bucket."
+}
