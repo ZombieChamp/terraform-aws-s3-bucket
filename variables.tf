@@ -148,3 +148,20 @@ variable "restrict_public_buckets" {
   type        = bool
   description = "(Optional, Default:true) Whether Amazon S3 should restrict public bucket policies for this bucket."
 }
+
+variable "enforce_encryption_in_transit" {
+  default     = true
+  type        = bool
+  description = "(Optional, Default:true) Whether to enforce encryption for data in transit."
+}
+
+variable "minimum_tls_version" {
+  default     = "1.3"
+  type        = string
+  description = "(Optional, Default:1.3) The minimum version of TLS to allow connectivity over."
+
+  validation {
+    condition     = contains(["1.0", "1.1", "1.2", "1.3"], var.minimum_tls_version)
+    error_message = "Valid TLS versions are: (1.0, 1.1, 1.2, 1.3)."
+  }
+}
