@@ -184,9 +184,9 @@ variable "expected_bucket_owner" {
 }
 
 variable "bucket_key_enabled" {
-  default     = false
+  default     = true
   type        = bool
-  description = "(Optional, Default:false) Whether or not to use Amazon S3 Bucket Keys for SSE-KMS."
+  description = "(Optional, Default:true) Whether or not to use Amazon S3 Bucket Keys for SSE-KMS."
 }
 
 variable "sse_algorithm" {
