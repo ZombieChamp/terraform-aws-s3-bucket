@@ -45,3 +45,19 @@ resource "aws_s3_bucket_policy" "this" {
   bucket = aws_s3_bucket.this.id
   policy = data.aws_iam_policy_document.encryption_in_transit.json
 }
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
+  count = var.enable_encryption_at_rest ? 1 : 0
+
+  bucket                = aws_s3_bucket.this.id
+  expected_bucket_owner = var.expected_bucket_owner
+
+  rule {
+    bucket_key_enabled = var.bucket_key_enabled
+
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = var.sse_algorithm
+      kms_master_key_id = var.kms_master_key_id
+    }
+  }
+}

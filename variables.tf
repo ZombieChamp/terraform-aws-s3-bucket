@@ -165,3 +165,43 @@ variable "minimum_tls_version" {
     error_message = "Valid TLS versions are: (1.0, 1.1, 1.2, 1.3)."
   }
 }
+
+variable "enable_encryption_at_rest" {
+  default     = true
+  type        = bool
+  description = "(Optional, Default:true) Whether to enable encryption for data at rest."
+}
+
+variable "expected_bucket_owner" {
+  default     = null
+  type        = string
+  description = "(Optional, Forces new resource) Account ID of the expected bucket owner."
+
+  validation {
+    condition     = var.expected_bucket_owner == null ? true : can(regex("^[0-9]{12}$", var.expected_bucket_owner))
+    error_message = "Account Id must be exactly twelve digits."
+  }
+}
+
+variable "bucket_key_enabled" {
+  default     = false
+  type        = bool
+  description = "(Optional, Default:false) Whether or not to use Amazon S3 Bucket Keys for SSE-KMS."
+}
+
+variable "sse_algorithm" {
+  default     = "AES256"
+  type        = string
+  description = "(Optional, Default:AES256) Server-side encryption algorithm to use."
+
+  validation {
+    condition     = contains(["AES256", "aws:kms", "aws:kms:dsse"], var.sse_algorithm)
+    error_message = "Valid encryption algorithms are: (AES256, aws:kms, aws:kms:dsse)."
+  }
+}
+
+variable "kms_master_key_id" {
+  default     = null
+  type        = string
+  description = "(Optional) AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms."
+}
