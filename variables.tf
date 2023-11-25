@@ -205,3 +205,14 @@ variable "kms_master_key_id" {
   type        = string
   description = "(Optional) AWS KMS master key ID used for the SSE-KMS encryption. This can only be used when you set the value of sse_algorithm as aws:kms. The default aws/s3 AWS KMS master key is used if this element is absent while the sse_algorithm is aws:kms."
 }
+
+variable "object_ownership" {
+  default     = "BucketOwnerEnforced"
+  type        = string
+  description = "(Optional, Default:BucketOwnerEnforced) Object ownership."
+
+  validation {
+    condition     = contains(["BucketOwnerPreferred", "ObjectWriter", "BucketOwnerEnforced"], var.object_ownership)
+    error_message = "Valid object ownership policies are: (BucketOwnerPreferred, ObjectWriter, BucketOwnerEnforced)."
+  }
+}
