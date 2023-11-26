@@ -216,3 +216,26 @@ variable "object_ownership" {
     error_message = "Valid object ownership policies are: (BucketOwnerPreferred, ObjectWriter, BucketOwnerEnforced)."
   }
 }
+
+variable "enable_versioning" {
+  default = true
+  type    = bool
+  description = "(Optional, Default:true) Whether to enabled object versioning."
+}
+
+variable "mfa_token" {
+  default     = null
+  type        = string
+  description = "(Optional) Concatenation of the authentication device's serial number, a space, and the value that is displayed on your authentication device."
+}
+
+variable "versioning_status" {
+  default     = "Enabled"
+  type        = string
+  description = "(Optional, Default:Enabled) Versioning state of the bucket. Valid values: Enabled, Suspended, or Disabled. Disabled should only be used when creating or importing resources that correspond to unversioned S3 buckets."
+
+  validation {
+    condition     = contains(["Enabled", "Suspended", "Disabled"], var.versioning_status)
+    error_message = "Valid object ownership policies are: (Enabled, Suspended, Disabled)."
+  }
+}

@@ -70,3 +70,16 @@ resource "aws_s3_bucket_ownership_controls" "this" {
     object_ownership = var.object_ownership
   }
 }
+
+resource "aws_s3_bucket_versioning" "this" {
+  count = var.enable_versioning ? 1 : 0
+
+  bucket                = aws_s3_bucket.this.id
+  expected_bucket_owner = var.expected_bucket_owner
+  mfa                   = var.mfa_token
+
+  versioning_configuration {
+    status     = var.versioning_status
+    mfa_delete = var.mfa_token != null ? "Enabled" : "Disabled"
+  }
+}
