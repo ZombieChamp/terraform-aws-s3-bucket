@@ -83,3 +83,19 @@ resource "aws_s3_bucket_versioning" "this" {
     mfa_delete = null # TODO: Find a better way of managing MFA enablement for object deletion. The issue is that the root account needs to apply it, however this is against good practice to store and use root AWS keys.
   }
 }
+
+resource "aws_s3_bucket_lifecycle_configuration" "this" {
+  count = var.enable_versioning ? 1 : 0
+
+  bucket                = aws_s3_bucket.this.id
+  expected_bucket_owner = var.expected_bucket_owner
+
+  rule {
+    id     = "AbortIncompleteMultipartUploads"
+    status = "Enabled"
+
+    abort_incomplete_multipart_upload {
+      days_after_initiation = var.days_until_abort_incomplete_multipart_upload
+    }
+  }
+}

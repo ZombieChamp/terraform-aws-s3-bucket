@@ -233,3 +233,9 @@ variable "versioning_status" {
     error_message = "Valid object ownership policies are: (Enabled, Suspended, Disabled)."
   }
 }
+
+variable "days_until_abort_incomplete_multipart_upload" {
+  default     = 7
+  type        = number
+  description = "(Optional, Default:7) Number of days after which Amazon S3 aborts an incomplete multipart upload."
+}
