@@ -239,3 +239,36 @@ variable "days_until_abort_incomplete_multipart_upload" {
   type        = number
   description = "(Optional, Default:7) Number of days after which Amazon S3 aborts an incomplete multipart upload."
 }
+
+variable "object_lock_retention_mode" {
+  default     = "GOVERNANCE"
+  type        = string
+  description = "(Optional, Default:GOVERNANCE) Default object Lock retention mode you want to apply to objects placed in the specified bucket. Valid values: (COMPLIANCE, GOVERNANCE)."
+
+  validation {
+    condition     = contains(["COMPLIANCE", "GOVERNANCE"], var.object_lock_retention_mode)
+    error_message = "Valid object Lock retention modes are: (COMPLIANCE, GOVERNANCE)."
+  }
+}
+
+variable "object_lock_days" {
+  default     = null
+  type        = number
+  description = "(Optional, Required if object_lock_enabled is true and object_lock_years is not specified) Number of days that you want to specify for the default retention period."
+
+  validation {
+    condition     = var.object_lock_days == null ? true : var.object_lock_days <= 36500
+    error_message = "The maximum retention period is 100 years."
+  }
+}
+
+variable "object_lock_years" {
+  default     = null
+  type        = number
+  description = "(Optional, Required if object_lock_enabled is true and object_lock_days is not specified) Number of years that you want to specify for the default retention period."
+
+  validation {
+    condition     = var.object_lock_years == null ? true : var.object_lock_years <= 100
+    error_message = "The maximum retention period is 100 years."
+  }
+}
