@@ -223,12 +223,6 @@ variable "enable_versioning" {
   description = "(Optional, Default:true) Whether to enabled object versioning."
 }
 
-variable "mfa_token" {
-  default     = null
-  type        = string
-  description = "(Optional) Concatenation of the authentication device's serial number, a space, and the value that is displayed on your authentication device."
-}
-
 variable "versioning_status" {
   default     = "Enabled"
   type        = string

@@ -76,10 +76,10 @@ resource "aws_s3_bucket_versioning" "this" {
 
   bucket                = aws_s3_bucket.this.id
   expected_bucket_owner = var.expected_bucket_owner
-  mfa                   = var.mfa_token
+  mfa                   = null # TODO: Find a better way of managing MFA enablement for object deletion. The issue is that the root account needs to apply it, however this is against good practice to store and use root AWS keys.
 
   versioning_configuration {
     status     = var.versioning_status
-    mfa_delete = var.mfa_token != null ? "Enabled" : "Disabled"
+    mfa_delete = null # TODO: Find a better way of managing MFA enablement for object deletion. The issue is that the root account needs to apply it, however this is against good practice to store and use root AWS keys.
   }
 }
