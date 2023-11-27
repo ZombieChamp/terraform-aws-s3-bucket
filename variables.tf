@@ -218,8 +218,8 @@ variable "object_ownership" {
 }
 
 variable "enable_versioning" {
-  default = true
-  type    = bool
+  default     = true
+  type        = bool
   description = "(Optional, Default:true) Whether to enabled object versioning."
 }
 
