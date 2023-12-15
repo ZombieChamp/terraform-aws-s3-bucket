@@ -1,3 +1,9 @@
+locals {
+  expected_bucket_owner = var.expected_bucket_owner == null ? data.aws_caller_identity.current.account_id : var.expected_bucket_owner
+}
+
+data "aws_caller_identity" "current" {}
+
 resource "aws_s3_bucket" "this" {
   bucket              = var.bucket
   bucket_prefix       = var.bucket_prefix
@@ -51,7 +57,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   count = var.enable_encryption_at_rest ? 1 : 0
 
   bucket                = aws_s3_bucket.this.id
-  expected_bucket_owner = var.expected_bucket_owner
+  expected_bucket_owner = local.expected_bucket_owner
 
   rule {
     bucket_key_enabled = var.bucket_key_enabled
@@ -75,7 +81,7 @@ resource "aws_s3_bucket_versioning" "this" {
   count = var.enable_versioning ? 1 : 0
 
   bucket                = aws_s3_bucket.this.id
-  expected_bucket_owner = var.expected_bucket_owner
+  expected_bucket_owner = local.expected_bucket_owner
   mfa                   = null # TODO: Find a better way of managing MFA enablement for object deletion. The issue is that the root account needs to apply it, however this is against good practice to store and use root AWS keys.
 
   versioning_configuration {
@@ -88,7 +94,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "this" {
   count = var.enable_versioning ? 1 : 0
 
   bucket                = aws_s3_bucket.this.id
-  expected_bucket_owner = var.expected_bucket_owner
+  expected_bucket_owner = local.expected_bucket_owner
 
   rule {
     id     = "AbortIncompleteMultipartUploads"
@@ -104,7 +110,7 @@ resource "aws_s3_bucket_object_lock_configuration" "this" {
   count = var.object_lock_enabled ? 1 : 0
 
   bucket                = aws_s3_bucket.this.id
-  expected_bucket_owner = var.expected_bucket_owner
+  expected_bucket_owner = local.expected_bucket_owner
 
   rule {
     default_retention {
