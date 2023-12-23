@@ -296,8 +296,8 @@ variable "redirect_all_requests_to_host_name" {
 }
 
 variable "error_document_key" {
-  default = null
-  type    = string
+  default     = null
+  type        = string
   description = "(Optional, Conflicts with redirect_all_requests_to_host_name) Object key name to use when a 4XX class error occurs."
 }
 
