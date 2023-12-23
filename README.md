@@ -32,6 +32,8 @@ No modules.
 | [aws_s3_bucket_object_lock_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object_lock_configuration) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.encryption_in_transit](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.public_read_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.combined_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
@@ -60,6 +62,11 @@ No modules.
 | <a name="object_lock_retention_mode"></a> [object\_lock\_retention\_mode](#input\_object\_lock\_retention\_mode) | (Optional, Default:GOVERNANCE) Default object Lock retention mode you want to apply to objects placed in the specified bucket. Valid values: (COMPLIANCE, GOVERNANCE). | `string` | `GOVERNANCE` | no |
 | <a name="object_lock_days"></a> [object\_lock\_days](#input\_object\_lock\_days) | (Optional, Required if object_lock_enabled is true and object_lock_years is not specified) Number of days that you want to specify for the default retention period. | `string` | `null` | no |
 | <a name="object_lock_years"></a> [object\_lock\_years](#input\_object\_lock\_years) | (Optional, Required if object_lock_enabled is true and object_lock_days is not specified) Number of years that you want to specify for the default retention period. | `number` | `null` | no |
+| <a name="index_document_suffix"></a> [index\_document\_suffix](#input\_index\_document\_suffix) | (Optional, Conflicts with redirect_all_requests_to_host_name) Suffix that is appended to a request that is for a directory on the website endpoint. | `string` | `null` | no |
+| <a name="redirect_all_requests_to_host_name"></a> [redirect\_all\_requests\_to\_host\_name](#input\_redirect\_all\_requests\_to\_host\_name) | (Optional, Conflicts with index_document_suffix) Name of the host where requests are redirected. | `string` | `null` | no |
+| <a name="error_document_key"></a> [error\_document\_key](#input\_error\_document\_key) | (Optional, Conflicts with redirect_all_requests_to_host_name) Object key name to use when a 4XX class error occurs. | `string` | `null` | no |
+| <a name="redirect_all_request_to_protocol"></a> [redirect\_all\_request\_to\_protocol](#input\_redirect\_all\_request\_to\_protocols) | (Optional) Protocol to use when redirecting requests. The default is the protocol that is used in the original request. Valid values: (https, http, null). | `string` | `null` | no |
+| <a name="enable_public_read_access"></a> [enable\_public\_read\_access](#input\_enable\_public\_read\_access) | (Optional, Default:false) Whether to enable public read access for the content of the bucket. | `bool` | `false` | no |
 
 ## Outputs
 
@@ -72,3 +79,5 @@ No modules.
 | <a name="output_bucket_hosted_zone_id"></a> [bucket\_hosted\_zone\_id](#output\_bucket\_hosted\_zone\_id) | Route 53 Hosted Zone ID for this bucket's region. |
 | <a name="output_bucket_region"></a> [bucket\_region](#output\_bucket\_region) | AWS region this bucket resides in. |
 | <a name="output_bucket_tags_all"></a> [bucket\_tags\_all](#output\_bucket\_tags\_all) | Map of tags assigned to the resource. |
+| <a name="output_bucket_website_domain"></a> [bucket\_website\_domain](#output\_bucket\_website\_domain) | Domain of the website endpoint. This is used to create Route 53 alias records. |
+| <a name="output_bucket_website_endpoint"></a> [bucket\_website\_endpoint](#output\_bucket\_website\_endpoint) | Website endpoint. |

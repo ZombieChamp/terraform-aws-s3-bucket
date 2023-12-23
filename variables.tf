@@ -272,3 +272,48 @@ variable "object_lock_years" {
     error_message = "The maximum retention period is 100 years."
   }
 }
+
+variable "index_document_suffix" {
+  default     = null
+  type        = string
+  description = "(Optional, Conflicts with redirect_all_requests_to_host_name) Suffix that is appended to a request that is for a directory on the website endpoint."
+
+  validation {
+    condition     = var.index_document_suffix != ""
+    error_message = "The suffix cannot be blank."
+  }
+
+  validation {
+    condition     = !can(regex("/", var.index_document_suffix))
+    error_message = "Suffix cannot contain a /."
+  }
+}
+
+variable "redirect_all_requests_to_host_name" {
+  default     = null
+  type        = string
+  description = "(Optional, Conflicts with index_document_suffix) Name of the host where requests are redirected."
+}
+
+variable "error_document_key" {
+  default = null
+  type    = string
+  description = "(Optional, Conflicts with redirect_all_requests_to_host_name) Object key name to use when a 4XX class error occurs."
+}
+
+variable "redirect_all_request_to_protocol" {
+  default     = null
+  type        = string
+  description = "(Optional) Protocol to use when redirecting requests. The default is the protocol that is used in the original request. Valid values: (https, http, null)."
+
+  validation {
+    condition     = var.redirect_all_request_to_protocol == null ? true : contains(["https", "http"], var.redirect_all_request_to_protocol)
+    error_message = "Valid object Lock retention modes are: (https, http, null)."
+  }
+}
+
+variable "enable_public_read_access" {
+  default     = false
+  type        = bool
+  description = "(Optional, Default:false) Whether to enable public read access for the content of the bucket."
+}

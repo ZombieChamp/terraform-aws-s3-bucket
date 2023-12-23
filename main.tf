@@ -13,6 +13,8 @@ resource "aws_s3_bucket" "this" {
 }
 
 resource "aws_s3_bucket_public_access_block" "this" {
+  count = var.enable_public_read_access ? 0 : 1
+
   bucket                  = aws_s3_bucket.this.id
   block_public_acls       = var.block_public_acls
   block_public_policy     = var.block_public_policy
@@ -46,11 +48,31 @@ data "aws_iam_policy_document" "encryption_in_transit" {
   }
 }
 
+data "aws_iam_policy_document" "public_read_access" {
+  statement {
+    sid       = "PublicReadGetObject"
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.this.arn}/*"]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "combined_bucket_policy" {
+  source_policy_documents = [
+    var.enforce_encryption_in_transit ? data.aws_iam_policy_document.encryption_in_transit.json : "",
+    var.enable_public_read_access ? data.aws_iam_policy_document.public_read_access.json : "",
+  ]
+}
+
 resource "aws_s3_bucket_policy" "this" {
-  count = var.enforce_encryption_in_transit ? 1 : 0
+  count = var.enforce_encryption_in_transit || var.enable_public_read_access ? 1 : 0
 
   bucket = aws_s3_bucket.this.id
-  policy = data.aws_iam_policy_document.encryption_in_transit.json
+  policy = data.aws_iam_policy_document.combined_bucket_policy.json
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
@@ -117,6 +139,38 @@ resource "aws_s3_bucket_object_lock_configuration" "this" {
       mode  = var.object_lock_retention_mode
       days  = var.object_lock_days
       years = var.object_lock_days
+    }
+  }
+}
+
+resource "aws_s3_bucket_website_configuration" "this" {
+  count = var.index_document_suffix != null || var.redirect_all_requests_to_host_name  != null ? 1 : 0
+
+  bucket                = aws_s3_bucket.this.id
+  expected_bucket_owner = local.expected_bucket_owner
+
+  dynamic "error_document" {
+    for_each = var.error_document_key == null ? [] : [1]
+
+    content {
+      key = var.error_document_key
+    }
+  }
+
+  dynamic "index_document" {
+    for_each = var.index_document_suffix == null ? [] : [1]
+
+    content {
+      suffix = var.index_document_suffix
+    }
+  }
+
+  dynamic "redirect_all_requests_to" {
+    for_each = var.redirect_all_requests_to_host_name == null ? [] : [1]
+
+    content {
+      host_name = var.redirect_all_requests_to_host_name
+      protocol  = var.redirect_all_request_to_protocol
     }
   }
 }

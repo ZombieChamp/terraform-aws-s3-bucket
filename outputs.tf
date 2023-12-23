@@ -32,3 +32,13 @@ output "bucket_tags_all" {
   value       = aws_s3_bucket.this.tags_all
   description = "Map of tags assigned to the resource."
 }
+
+output "bucket_website_domain" {
+  value       = var.index_document_suffix != null || var.redirect_all_requests_to_host_name  != null ? aws_s3_bucket_website_configuration.this.website_domain : null
+  description = "Domain of the website endpoint. This is used to create Route 53 alias records."
+}
+
+output "bucket_website_endpoint" {
+  value       = var.index_document_suffix != null || var.redirect_all_requests_to_host_name  != null ? aws_s3_bucket_website_configuration.this.website_endpoint : null
+  description = "Website endpoint."
+}
