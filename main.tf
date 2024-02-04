@@ -23,6 +23,8 @@ resource "aws_s3_bucket_public_access_block" "this" {
 }
 
 data "aws_iam_policy_document" "encryption_in_transit" {
+  count = var.enforce_encryption_in_transit ? 1 : 0
+
   statement {
     sid       = "EnforceEncryptionInTransit"
     effect    = "Deny"
@@ -49,6 +51,8 @@ data "aws_iam_policy_document" "encryption_in_transit" {
 }
 
 data "aws_iam_policy_document" "public_read_access" {
+  count = var.enable_public_read_access ? 1 : 0
+
   statement {
     sid       = "PublicReadGetObject"
     actions   = ["s3:GetObject"]
@@ -63,8 +67,8 @@ data "aws_iam_policy_document" "public_read_access" {
 
 data "aws_iam_policy_document" "combined_bucket_policy" {
   source_policy_documents = [
-    var.enforce_encryption_in_transit ? data.aws_iam_policy_document.encryption_in_transit.json : "",
-    var.enable_public_read_access ? data.aws_iam_policy_document.public_read_access.json : "",
+    var.enforce_encryption_in_transit ? one(data.aws_iam_policy_document.encryption_in_transit[*].json) : "",
+    var.enable_public_read_access ? one(data.aws_iam_policy_document.public_read_access[*].json) : "",
   ]
 }
 
