@@ -174,7 +174,7 @@ resource "aws_s3_bucket_website_configuration" "this" {
 
     content {
       host_name = var.redirect_all_requests_to_host_name
-      protocol  = var.redirect_all_request_to_protocol
+      protocol  = var.redirect_all_requests_to_protocol
     }
   }
 }

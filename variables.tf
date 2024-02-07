@@ -301,13 +301,13 @@ variable "error_document_key" {
   description = "(Optional, Conflicts with redirect_all_requests_to_host_name) Object key name to use when a 4XX class error occurs."
 }
 
-variable "redirect_all_request_to_protocol" {
+variable "redirect_all_requests_to_protocol" {
   default     = null
   type        = string
   description = "(Optional) Protocol to use when redirecting requests. The default is the protocol that is used in the original request. Valid values: (https, http, null)."
 
   validation {
-    condition     = var.redirect_all_request_to_protocol == null ? true : contains(["https", "http"], var.redirect_all_request_to_protocol)
+    condition     = var.redirect_all_requests_to_protocol == null ? true : contains(["https", "http"], var.redirect_all_requests_to_protocol)
     error_message = "Valid object Lock retention modes are: (https, http, null)."
   }
 }
