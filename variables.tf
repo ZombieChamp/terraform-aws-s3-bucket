@@ -308,7 +308,7 @@ variable "redirect_all_requests_to_protocol" {
 
   validation {
     condition     = var.redirect_all_requests_to_protocol == null ? true : contains(["https", "http"], var.redirect_all_requests_to_protocol)
-    error_message = "Valid object Lock retention modes are: (https, http, null)."
+    error_message = "Valid protocol values are: (https, http, null)."
   }
 }
 
