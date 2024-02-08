@@ -34,11 +34,11 @@ output "bucket_tags_all" {
 }
 
 output "bucket_website_domain" {
-  value       = var.index_document_suffix != null || var.redirect_all_requests_to_host_name  != null ? one(aws_s3_bucket_website_configuration.this.*.website_domain) : null
+  value       = var.index_document_suffix != null || var.redirect_all_requests_to_host_name != null ? one(aws_s3_bucket_website_configuration.this.*.website_domain) : null
   description = "Domain of the website endpoint. This is used to create Route 53 alias records."
 }
 
 output "bucket_website_endpoint" {
-  value       = var.index_document_suffix != null || var.redirect_all_requests_to_host_name  != null ? one(aws_s3_bucket_website_configuration.this.*.website_endpoint) : null
+  value       = var.index_document_suffix != null || var.redirect_all_requests_to_host_name != null ? one(aws_s3_bucket_website_configuration.this.*.website_endpoint) : null
   description = "Website endpoint."
 }
