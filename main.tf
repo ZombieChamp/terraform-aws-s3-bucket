@@ -5,10 +5,9 @@ locals {
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "this" {
-  bucket              = var.bucket
-  bucket_prefix       = var.bucket_prefix
-  force_destroy       = var.force_destroy
-  object_lock_enabled = var.object_lock_enabled
+  bucket        = var.bucket
+  bucket_prefix = var.bucket_prefix
+  force_destroy = var.force_destroy
 
   tags = var.tags
 }
