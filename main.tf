@@ -148,7 +148,7 @@ resource "aws_s3_bucket_object_lock_configuration" "this" {
 }
 
 resource "aws_s3_bucket_website_configuration" "this" {
-  count = var.index_document_suffix != null || var.redirect_all_requests_to_host_name  != null ? 1 : 0
+  count = var.index_document_suffix != null || var.redirect_all_requests_to_host_name != null ? 1 : 0
 
   bucket                = aws_s3_bucket.this.id
   expected_bucket_owner = local.expected_bucket_owner
