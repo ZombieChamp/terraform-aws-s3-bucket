@@ -30,6 +30,7 @@ No modules.
 | [aws_s3_bucket_versioning.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
 | [aws_s3_bucket_lifecycle_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_lifecycle_configuration) | resource |
 | [aws_s3_bucket_object_lock_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object_lock_configuration) | resource |
+| [aws_s3_bucket_accelerate_configuration.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_accelerate_configuration) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_iam_policy_document.encryption_in_transit](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.public_read_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
@@ -67,6 +68,7 @@ No modules.
 | <a name="error_document_key"></a> [error\_document\_key](#input\_error\_document\_key) | (Optional, Conflicts with redirect_all_requests_to_host_name) Object key name to use when a 4XX class error occurs. | `string` | `null` | no |
 | <a name="redirect_all_request_to_protocol"></a> [redirect\_all\_request\_to\_protocol](#input\_redirect\_all\_request\_to\_protocols) | (Optional) Protocol to use when redirecting requests. The default is the protocol that is used in the original request. Valid values: (https, http, null). | `string` | `null` | no |
 | <a name="enable_public_read_access"></a> [enable\_public\_read\_access](#input\_enable\_public\_read\_access) | (Optional, Default:false) Whether to enable public read access for the content of the bucket. | `bool` | `false` | no |
+| <a name="enable_transfer_acceleration"></a> [enable\_transfer\_acceleration](#input\_enable\_transfer\_acceleration) | (Optional, Default:false) Indicates whether this bucket has transfer acceleration configuration enabled. | `bool` | `false` | no |
 
 ## Outputs
 

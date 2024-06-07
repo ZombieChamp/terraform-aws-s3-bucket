@@ -317,3 +317,9 @@ variable "enable_public_read_access" {
   type        = bool
   description = "(Optional, Default:false) Whether to enable public read access for the content of the bucket."
 }
+
+variable "enable_transfer_acceleration" {
+  default     = false
+  type        = bool
+  description = "(Optional, Default:false) Indicates whether this bucket has transfer acceleration configuration enabled."
+}
